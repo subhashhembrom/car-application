@@ -1,0 +1,1 @@
+export const DB_NAME = "CAR_MANAGEMENT_PROJECT"

@@ -1,0 +1,22 @@
+.subHeading {
+    text-align: center;
+}
+.button-container {
+    margin-left: 35vw;
+}
+.logOut {
+    display: block;
+    margin: 4vh auto;
+}
+.buttons {
+    margin-left: 2vw;
+}
+.home-page {
+    display: flex;
+    flex-direction: column;
+    margin: 20vh 0 0 0;
+}
+button {
+    cursor: pointer;
+    border-radius: 5px;
+}
