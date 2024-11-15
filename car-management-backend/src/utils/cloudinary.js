@@ -87,7 +87,12 @@ router.post('/upload', upload.single('image'), (req, res) => {
       }
 
       // Send back the Cloudinary image URL
-      res.json({ imageUrl: result.secure_url });
+      
+     // console.log(uploadStream.url)
+     // res.json({ imageUrl: result.secure_url });
+      res.json({imageUrl: uploadStream.url});
+      //console.log(result.secure_url)
+      
     }
   );
 

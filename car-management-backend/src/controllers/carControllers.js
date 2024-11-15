@@ -1,4 +1,4 @@
-import Car from '../models/Car.js';
+import Car from '../models/car.js';
 
 // Create a new car
 export const createCar = async (req, res) => {
@@ -21,22 +21,43 @@ export const createCar = async (req, res) => {
 // Get all cars created by the logged-in user
 export const getCars = async (req, res) => {
   try {
-    const cars = await Car.find({ owner: req.user.id });
-    res.json(cars);
+    const car = await Car.find({ owner: req.user.id });
+    res.json(car);
   } catch (err) {
     res.status(500).json({ msg: 'Server Error', error: err.message });
   }
 };
 
 // Get a specific car by ID
+// export const getCarById = async (req, res) => {
+//   try {
+//     const car = await Car.findById(req.params.id);
+//     if (!car ) { //|| car.owner.toString() !== req.user.id
+//       return res.status(404).json({ msg: 'Car not found' });
+//     }
+//     res.json(car);
+//   } catch (err) {
+//     res.status(500).json({ msg: 'Server Error', error: err.message });
+//   }
+// };
+
 export const getCarById = async (req, res) => {
   try {
-    const car = await Car.findById(req.params.id);
-    if (!car || car.owner.toString() !== req.user.id) {
+    const { id } = req.params;
+    console.log("Received ID:", id);  // Log the ID to ensure it’s being received correctly
+
+    // Check if the ID is valid
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).json({ msg: 'Invalid ID format' });
+    }
+
+    const car = await Car.findById(id);
+    if (!car) {
       return res.status(404).json({ msg: 'Car not found' });
     }
     res.json(car);
   } catch (err) {
+    console.error(err.message); // Log the error for debugging
     res.status(500).json({ msg: 'Server Error', error: err.message });
   }
 };

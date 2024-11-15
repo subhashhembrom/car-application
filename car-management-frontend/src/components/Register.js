@@ -9,11 +9,14 @@ const Register = () => {
   const [error, setError] = useState(''); // State for error messages
   const navigate = useNavigate();
 
+  //const API_URL = process.env.REACT_APP_API_URL;
+
   const handleRegister = async (e) => {
     e.preventDefault();
     setError(''); // Clear previous errors
     try {
       const res = await axios.post('http://localhost:8000/api/auth/register', { name, email, password });
+      //const res = await axios.post(`${API_URL}/api/auth/register`, { name, email, password });
       localStorage.setItem('token', res.data.token); // Store token in local storage
       navigate('/'); // Redirect to home page or dashboard
     } catch (error) {

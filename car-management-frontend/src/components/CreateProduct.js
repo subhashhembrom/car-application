@@ -127,6 +127,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './CreateProduct.css';
+//import router from '../../../car-management-backend/src/utils/cloudinary';
 
 const ProductCreation = () => {
   const [title, setTitle] = useState('');
@@ -134,6 +135,8 @@ const ProductCreation = () => {
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+
+  //const API_URL = process.env.REACT_APP_API_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -151,6 +154,7 @@ const ProductCreation = () => {
       // Step 1: Upload the image to Cloudinary via the backend
       const formData = new FormData();
       formData.append('image', image);
+      console.log("image received",image)
 
       const uploadResponse = await axios.post(
         'http://localhost:8000/api/upload',
@@ -163,15 +167,28 @@ const ProductCreation = () => {
         }
       );
 
+      // const uploadResponse = await axios.post(
+      //   `${API_URL}/api/upload`,
+      //   formData,
+      //   {
+      //     headers: {
+      //       'Authorization': `Bearer ${token}`,
+      //       'Content-Type': 'multipart/form-data',
+      //     },
+      //   }
+      // );
+
       // Get the image URL from the Cloudinary upload response
+     // console.log(uploadResponse.data.imageUrl)
       const imageUrl = uploadResponse.data.imageUrl;
+      
       
 
       // Step 2: Submit the product data with the image URL
       const productData = {
         title,
         description,
-        imageUrl,
+        images : [imageUrl],
       };
 
       const response = await axios.post(
@@ -183,6 +200,16 @@ const ProductCreation = () => {
           },
         }
       );
+
+      // const response = await axios.post(
+      //   `${API_URL}/api/cars/create`,
+      //   productData,
+      //   {
+      //     headers: {
+      //       'Authorization': `Bearer ${token}`,
+      //     },
+      //   }
+      // );
 
       setLoading(false);
       setMessage('Product created successfully!');
@@ -232,7 +259,9 @@ const ProductCreation = () => {
         {message && <div className="message">{message}</div>}
 
         <button type="submit" className="submit-btn" disabled={loading}>
+
           {loading ? 'Submitting...' : 'Create Product'}
+      
         </button>
       </form>
     </div>

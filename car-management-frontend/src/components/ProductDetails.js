@@ -12,10 +12,13 @@ const ProductDetails = () => {
   const { id } = useParams(); // Getting the product ID from the URL
   const navigate = useNavigate();
 
+  //const API_URL = process.env.REACT_APP_API_URL;
+
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(`http://localhost:8000/api/cars/${id}`);
+        //const response = await axios.get(`${API_URL}/api/cars/${id}`);
         setProduct(response.data);
         setLoading(false);
       } catch (error) {
@@ -31,11 +34,16 @@ const ProductDetails = () => {
   const handleDelete = async () => {
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:5000/api/cars/${id}`, {
+      await axios.delete(`http://localhost:8000/api/cars/${id}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
       });
+      // await axios.delete(`${API_URL}/api/cars/${id}`, {
+      //   headers: {
+      //     'Authorization': `Bearer ${token}`,
+      //   },
+      // });
       setMessage('Product deleted successfully.');
       navigate.push('/products'); // Redirect to product list page after deletion
     } catch (error) {
@@ -62,11 +70,16 @@ const ProductDetails = () => {
       {message && <div className="message">{message}</div>}
 
       <div className="product-detail">
-        <img
-          src={`http://localhost:5000/uploads/${product.image}`}
+        { <img
+          src={`http://localhost:8000/uploads/${product.image}`}
           alt={product.title}
           className="product-image"
-        />
+        /> }
+        {/* <img
+          src={`${API_URL}/uploads/${product.image}`}
+          alt={product.title}
+          className="product-image"
+        /> */}
         <div className="product-info">
           <h2>{product.title}</h2>
           <p><strong>Description:</strong> {product.description}</p>
